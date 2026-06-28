@@ -7,7 +7,13 @@ const app = express();
 const port = `${process.env.EXPRESS_PORT}`;
 
 app.use(express.json());
-app.use("/user", userRoutes)
+app.use("/users", userRoutes);
+
+app.get("/", (req, res) => {
+    return res.status(200).json({
+        success: true, 
+        msg: "Welcome to Blockfuse Vintage"})
+});
 
 
 app.listen(port, () => {
