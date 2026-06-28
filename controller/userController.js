@@ -1,5 +1,5 @@
 import { error } from "node:console";
-import { createNewUser, findUserByEmail, findUserById } from "../model/userModel"
+import { createNewUser, findUserByEmail, findUserById, findAllUsers } from "../model/userModel"
 
 // CREATE USER
 export async function createUser(req, res) {
@@ -73,7 +73,24 @@ export async function getUserById(req, res) {
 
     }
     catch(err) {
-        console.log(err)
-        res.status(400).json({error: err.message})
+        return res.status(400).json({error: err.message})
+    }
+}
+
+// GET ALL USERS
+export async function getAllUsers(req, res) {
+
+    try {
+
+        const user = await findAllUsers();
+
+        return res.status(200).json({
+            success: true,
+            data: user
+        })        
+
+    }
+    catch(err) {
+        return res.status(400).json({error: err.message})
     }
 }

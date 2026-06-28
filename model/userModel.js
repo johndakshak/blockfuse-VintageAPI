@@ -21,3 +21,7 @@ export async function findUserByEmail(email) {
 export async function findUserById(id) {
     return prisma.user.findUnique({ where: { id } });
 }
+
+export async function findAllUsers() {
+    return prisma.user.findMany();
+}
