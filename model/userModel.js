@@ -25,3 +25,10 @@ export async function findUserById(id) {
 export async function findAllUsers() {
     return prisma.user.findMany();
 }
+
+export async function updateUserDetails(id, data) {
+    return prisma.user.update({
+        where: { id }, 
+        data
+    });
+}
