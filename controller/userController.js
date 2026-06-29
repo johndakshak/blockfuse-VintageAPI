@@ -227,7 +227,7 @@ export async function updateUser(req, res) {
     }
 }
 
-// DELETE USER
+// DELETE USER BY ID
 export async function deleteUser(req, res) {
     try {
         const id = Number(req.params.id);
