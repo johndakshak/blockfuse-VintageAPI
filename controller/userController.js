@@ -1,5 +1,5 @@
 import { error, log } from "node:console";
-import { createNewUser, findUserByEmail, findUserById, findAllUsers, updateUserDetails } from "../model/userModel"
+import { createNewUser, findUserByEmail, findUserById, findAllUsers, updateUserDetails, deleteUserById } from "../model/userModel"
 import { isValidEmail, isValidPassword } from "../utils/validators.js";
 
 // CREATE USER
@@ -223,7 +223,39 @@ export async function updateUser(req, res) {
                
     }
     catch (err) {
-        console.log(err)
         return res.status(400).json({success: false, error: err.message});
     }
+}
+
+// DELETE USER BY ID
+export async function deleteUser(req, res) {
+    try {
+        const id = Number(req.params.id);
+        
+        if (Number.isNaN(id)) {
+            return res.status(400).json({
+                success: false,
+                msg: "Missing or Invalid data"
+            });
+        }
+        
+        const userExist = await findUserById(id);
+
+        if (!userExist){
+            return res.status(404).json({
+                success: false,
+                msg: "User not found"
+            });
+        }
+
+        await deleteUserById(id);
+        
+        return res.status(200).json({
+            success: true,
+            msg: "User deleted successfully"
+        });
+    }
+    catch (err) {
+        return res.status(400).json({success: false, error: err.message});
+    }    
 }

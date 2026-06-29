@@ -1,5 +1,5 @@
 import { prisma } from "../lib/prisma";
-import bcrypt, { genSalt } from "bcrypt";
+import bcrypt from "bcrypt";
 
 export async function createNewUser(data) {
 
@@ -30,5 +30,11 @@ export async function updateUserDetails(id, data) {
     return prisma.user.update({
         where: { id }, 
         data
+    });
+}
+
+export async function deleteUserById(id) {
+    return prisma.user.delete({ 
+        where: { id } 
     });
 }
