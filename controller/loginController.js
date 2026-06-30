@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import "dotenv/config";
 
 export async function login(req, res) {
-    
+
     try {
 
         const { email, password } = req.body;       
@@ -73,12 +73,7 @@ export async function login(req, res) {
         
         return res.status(200).json({
             success: true,
-            msg: "login successfull",
-            data: {
-                id: userExist.id,
-                name: userExist.name,
-                email: userExist.email,
-            },            
+            msg: "login successfull",           
             access_token: token
         });
     }
