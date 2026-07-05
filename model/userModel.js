@@ -9,7 +9,7 @@ export async function createNewUser(data) {
         data: {
             name: data.name,
             email: data.email,
-            password: hashedPassword
+            password: hashedPassword,
         }
     });
 }

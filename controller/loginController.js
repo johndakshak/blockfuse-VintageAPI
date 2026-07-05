@@ -41,7 +41,6 @@ export async function login(req, res) {
             return res.status(404).json({
                 success: false,
                 msg: "Ivalid email or password",
-                from: "userExist block"
             });            
         }
         
@@ -51,19 +50,18 @@ export async function login(req, res) {
             return res.status(404).json({
                 success: false,
                 msg: "Ivalid email or password",
-                from: "passwordMatch block"
             });
         }
 
         const JWT_SECRET = process.env.JWT_SECRET;
         const JWT_EXP_TIME = "30M";
-        console.log(JWT_EXP_TIME)
         
         const token = jwt.sign({
             
             id: userExist.id,
             name: userExist.name,
             email: userExist.email,
+            role: userExist.role
             }, 
             JWT_SECRET, 
             { 
@@ -74,7 +72,10 @@ export async function login(req, res) {
         return res.status(200).json({
             success: true,
             msg: "login successfull",           
-            access_token: token
+            access_token: {
+                token: token,
+                role: userExist
+            }
         });
     }
     catch (err) {

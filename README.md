@@ -141,11 +141,17 @@ Responses:
 ## Data Model
 
 ```prisma
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   name      String
   password  String
+  role      Role      @default(USER)
   createdAt DateTime @default(now())
 }
 ```

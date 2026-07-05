@@ -1,13 +1,16 @@
-import { authMiddleware } from "./authMiddleware";
+import { findUserById } from "../model/userModel";
 
 export async function getCurrentUser(req, res) {
     
     try {
+
+        const id = req.user.id;
+        const userExist = await findUserById(id);
         
         return res.status(200).json({
             success: true,
             msg: "User found",
-            user: req.user
+            user: userExist
         });
 
     }
