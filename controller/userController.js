@@ -1,4 +1,4 @@
-import { error, log } from "node:console";
+// import { error, log } from "node:console";
 import { createNewUser, findUserByEmail, findUserById, findAllUsers, updateUserDetails, deleteUserById } from "../model/userModel"
 import { isValidEmail, isValidPassword } from "../utils/validators.js";
 
