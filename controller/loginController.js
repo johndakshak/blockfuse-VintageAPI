@@ -56,14 +56,14 @@ export async function login(req, res) {
         }
 
         const JWT_SECRET = process.env.JWT_SECRET;
-        const JWT_EXP_TIME = process.env.JWT_EXP_TIME;
+        const JWT_EXP_TIME = "30M";
+        console.log(JWT_EXP_TIME)
         
         const token = jwt.sign({
-            data: {
-                id: userExist.id,
-                name: userExist.name,
-                email: userExist.email,
-            }
+            
+            id: userExist.id,
+            name: userExist.name,
+            email: userExist.email,
             }, 
             JWT_SECRET, 
             { 
@@ -82,6 +82,6 @@ export async function login(req, res) {
             success: false,
             msg: "Failed to login",
             reason: err.message
-        })
+        });
     }
 }
