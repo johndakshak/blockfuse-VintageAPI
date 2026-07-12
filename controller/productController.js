@@ -1,10 +1,14 @@
 import { createNewProduct } from "../model/productModel";
+import { cloudinary } from "../config/cloudinary";
 
 export async function addProduct(req, res) {
     
     try {
 
-        const {id, name, description, price, imageUrl, stock } = req.body;
+        const {name, description, imageUrl} = req.body;
+        
+        const price = parseFloat(req.body.price);
+        const stock = parseInt(req.body.stock);
 
         if (name !== undefined) {
             if (typeof name !== "string" || name.trim() === "") {
@@ -57,9 +61,22 @@ export async function addProduct(req, res) {
         }        
 
         const user = req.user;
- 
+
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                msg: "Product image is required"
+            });
+        }
+
+        const newImageUrl = req.file.path;       
+
         const addProduct = await createNewProduct({
-            ...req.body,
+            name,
+            description,
+            imageUrl: newImageUrl,
+            stock,
+            price,
             createdBy: user.id
         });
 
@@ -71,9 +88,10 @@ export async function addProduct(req, res) {
 
     }
     catch(err){
+        console.log(err.message)
         return res.status(400).json({
             success: false,
-            msg: "Falied to Add new product",
+            msg: "Failed to Add new product",
             reason: err.message
         });
     }
