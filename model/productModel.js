@@ -17,6 +17,10 @@ export async function createNewProduct(data) {
     });
 }
 
-export async function getAllProducts() {
+export async function findAllProducts() {
     return prisma.product.findMany();
+}
+
+export async function findProductById(id) {
+    return prisma.product.findUnique({ where: { id } });
 }

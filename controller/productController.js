@@ -1,6 +1,7 @@
-import { createNewProduct, getAllProducts } from "../model/productModel";
+import { createNewProduct, findAllProducts, findProductById } from "../model/productModel";
 import { cloudinary } from "../config/cloudinary";
 
+// ADD PRODUCT
 export async function addProduct(req, res) {
     
     try {
@@ -97,10 +98,11 @@ export async function addProduct(req, res) {
     }
 }
 
+// GET ALL PRODUCTS
 export async function getProducts(req, res) {
     
     try {
-        const products = await getAllProducts();
+        const products = await findAllProducts();
 
         return res.status(200).json({
             success: true,
@@ -112,6 +114,43 @@ export async function getProducts(req, res) {
         return res.status(500).json({
             success: false,
             msg: "Failed to retrieve products",
+            reason: err.message
+        });
+    }
+}
+
+// GET SINGLE PRODUCT
+export async function getProductById(req, res) {
+    
+    try {
+        const id = Number(req.params.id);
+
+        if (Number.isNaN(id)) {
+            return res.status(400).json({
+                success: false,
+                msg: "Missing or Invalid data"
+            });
+        }
+
+        const product = await findProductById(Number(id));
+
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                msg: "Product not found",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            msg: "Product retrived successfully",
+            data: product,
+        });    
+    }
+    catch (err) {
+        return res.status(500).json({
+            success: false,
+            msg: "Failed to retrieve product",
             reason: err.message
         });
     }
