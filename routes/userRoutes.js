@@ -3,7 +3,6 @@ import { createUser, getUserById, getAllUsers, updateUser, deleteUser } from "..
 import { authMiddleware } from "../middleware/authMiddleware";
 import { adminMiddleware } from "../middleware/adminMiddleware"
 
-
 const router = express.Router();
 
 router.post("/create", createUser);
