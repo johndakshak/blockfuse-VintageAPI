@@ -16,3 +16,7 @@ export async function createNewProduct(data) {
         }
     });
 }
+
+export async function getAllProducts() {
+    return prisma.product.findMany();
+}

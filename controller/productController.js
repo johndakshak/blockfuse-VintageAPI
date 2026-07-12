@@ -1,4 +1,4 @@
-import { createNewProduct } from "../model/productModel";
+import { createNewProduct, getAllProducts } from "../model/productModel";
 import { cloudinary } from "../config/cloudinary";
 
 export async function addProduct(req, res) {
@@ -92,6 +92,26 @@ export async function addProduct(req, res) {
         return res.status(400).json({
             success: false,
             msg: "Failed to Add new product",
+            reason: err.message
+        });
+    }
+}
+
+export async function getProducts(req, res) {
+    
+    try {
+        const products = await getAllProducts();
+
+        return res.status(200).json({
+            success: true,
+            msg: "Products retrieved successfully",
+            data: products
+        });
+    } 
+    catch (err) {
+        return res.status(500).json({
+            success: false,
+            msg: "Failed to retrieve products",
             reason: err.message
         });
     }
