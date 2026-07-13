@@ -1,4 +1,4 @@
-import { createNewProduct, findAllProducts, findProductById, updateProductDetails } from "../model/productModel";
+import { createNewProduct, findAllProducts, findProductById, updateProductDetails, deleteProductById } from "../model/productModel";
 import { cloudinary } from "../config/cloudinary";
 
 // ADD PRODUCT
@@ -274,5 +274,45 @@ export async function updateProduct(req, res) {
             reason: err.message
         });
     }
+}
+
+
+// DELETE PRODUCT
+export async function deleteProduct(req, res) {
+    
+    try {
+
+        const id = Number(req.params.id);
+
+        if (Number.isNaN(id)) {  
+            return res.status(400).json({
+                success: false,
+                msg: "Invalid product id"
+            });
+        }        
+
+        const productExist = await findProductById(id);
+        
+        if (!productExist) {
+            return res.status(404).json({
+                success: false,
+                msg: "Product not found"
+            });
+        }
+
+        await deleteProductById(id);
+
+        res.status(200).json({
+            success: true,
+            msg: "Product deleted successfully"
+        });
+    }
+    catch(err){
+        return res.status(400).json({
+            success: false,
+            msg: "Failed to delete product",
+            reason: err.message
+        });
+    }    
 }
     

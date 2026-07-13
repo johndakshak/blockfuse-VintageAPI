@@ -31,3 +31,7 @@ export async function updateProductDetails(id, data) {
         data
     });
 }
+
+export async function deleteProductById(id) {
+    return prisma.product.delete({ where: { id } });
+}
