@@ -213,7 +213,7 @@ export async function updateUser(req, res) {
             }            
         }
 
-        const updatedUser = await updateUserDetails(id, { name, email})
+        const updatedUser = await updateUserDetails(id, { name, email })
 
         return res.status(200).json({
             success:true,
