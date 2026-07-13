@@ -24,3 +24,10 @@ export async function findAllProducts() {
 export async function findProductById(id) {
     return prisma.product.findUnique({ where: { id } });
 }
+
+export async function updateProductDetails(id, data) {
+    return prisma.product.update({
+        where: { id },
+        data
+    });
+}
