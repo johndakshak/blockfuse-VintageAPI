@@ -88,7 +88,6 @@ export async function addProduct(req, res) {
 
     }
     catch(err){
-        console.log(err.message)
         return res.status(400).json({
             success: false,
             msg: "Failed to Add new product",
