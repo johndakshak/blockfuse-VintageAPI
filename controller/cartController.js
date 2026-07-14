@@ -1,4 +1,4 @@
-import { addProductsToCart } from "../model/cartModel";
+import { addProductsToCart, getCartItems } from "../model/cartModel";
 import { findProductById } from "../model/productModel";
 
 // ADD ITEMS TO CART
@@ -63,4 +63,43 @@ export async function addToCart(req, res) {
             reason: err.message
         });
     }    
+}
+
+// GET CART ITEMS
+export async function getAllCartItems(req, res) {
+    
+    try {
+
+        const user = req.user;
+        const cartItems = await getCartItems(user.id);
+
+        if (cartItems.length <= 0) {
+            return res.status(404).json({
+                success: false,
+                msg: "Your cart is empty",
+                data: cartItems
+            });
+        }
+
+        const totalPrice = cartItems.reduce((sum, item) => {
+            console.log(item)
+            return sum + (item.quantity * Number(item.product.price))
+        }, 0);
+
+        console.log(totalPrice)
+        
+        return res.status(200).json({
+            success: true,
+            msg: "Cart items retrieved successfully",
+            totalPrice: totalPrice,
+            data: cartItems
+        });
+    }
+    catch(err){
+        return res.status(400).json({
+            success: false,
+            msg: "Failed to get cart items",
+            reason: err.message
+        });
+    }     
 }

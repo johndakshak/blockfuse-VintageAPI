@@ -1,14 +1,6 @@
 import { prisma } from "../lib/prisma";
 
-//   id        Int      @id @default(autoincrement())
-//   quantity  Int
-//   userId    Int
-//   productId Int
-//   user      User     @relation(fields: [userId], references: [id])
-//   product   Product  @relation(fields: [productId], references: [id])
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-
+// ADD PRODUCTS TO CART
 export async function addProductsToCart(data) {
     return prisma.cart.upsert({
         where: { 
@@ -25,5 +17,13 @@ export async function addProductsToCart(data) {
         update: { 
             quantity: { increment: data.quantity }
         }
+    });
+}
+
+// GET ALL CART ITEMS
+export async function getCartItems(userId) {
+    return prisma.cart.findMany({
+        where: { userId },
+        include: { product: true }
     });
 }
