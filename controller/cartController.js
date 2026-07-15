@@ -1,4 +1,5 @@
-import { addProductsToCart, getCartItems } from "../model/cartModel";
+import { log } from "node:console";
+import { addProductsToCart, findCartItemById, getCartItems, updateCartItemQty } from "../model/cartModel";
 import { findProductById } from "../model/productModel";
 
 // ADD ITEMS TO CART
@@ -82,11 +83,8 @@ export async function getAllCartItems(req, res) {
         }
 
         const totalPrice = cartItems.reduce((sum, item) => {
-            console.log(item)
             return sum + (item.quantity * Number(item.product.price))
         }, 0);
-
-        console.log(totalPrice)
         
         return res.status(200).json({
             success: true,
@@ -102,4 +100,63 @@ export async function getAllCartItems(req, res) {
             reason: err.message
         });
     }     
+}
+
+// UPDATE QUANTITY
+export async function updateCartQty(req, res) {
+    
+    try {
+
+        const quantity = req.body.quantity;
+        const id = Number(req.params.id);
+
+        if (!quantity || Number.isNaN(quantity)) {
+            return res.status(400).json({
+                success: false,
+                msg: "Quantity must be a valid integer"
+            });
+        }
+
+        if (!id || Number.isNaN(id)) {
+            return res.status(400).json({
+                success: false,
+                msg: "Id must be a valid integer"
+            });
+        }         
+
+        const cartItemExist = await findCartItemById(id);
+
+        if (!cartItemExist) {
+            return res.status(404).json({
+                success: false,
+                msg: "Cart item not found"
+            });
+        }
+
+        const userId = req.user.id;
+
+        if (cartItemExist.userId !== userId) {
+            return res.status(403).json({
+                success: false,
+                msg: "Cart item does not belong to the user"
+            });
+        }
+
+        const updatedCartQty = await updateCartItemQty(id, { quantity });
+
+        return res.status(200).json({
+            success: true,
+            msg: "Qty updated successfully",
+            data: updatedCartQty
+        });
+
+    }
+
+    catch(err){
+        return res.status(400).json({
+            success: false,
+            msg: "Failed to update cart qty",
+            reason: err.message
+        });
+    }      
 }

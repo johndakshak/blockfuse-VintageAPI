@@ -27,3 +27,16 @@ export async function getCartItems(userId) {
         include: { product: true }
     });
 }
+
+// FIND CART ITEM BY ID
+export async function findCartItemById(id) {
+    return prisma.cart.findUnique({ where: { id } });
+}
+
+// UPDATE QUANTITY
+export async function updateCartItemQty(id, data) {
+    return prisma.cart.update({
+        where: { id },
+        data
+    });
+}
