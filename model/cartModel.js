@@ -40,3 +40,8 @@ export async function updateCartItemQty(id, data) {
         data
     });
 }
+
+// DELETE CART ITEMS
+export async function deleteCartItemsById(id) {
+    return prisma.cart.delete({ where: { id } });
+}

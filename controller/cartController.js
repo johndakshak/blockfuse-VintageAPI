@@ -1,5 +1,5 @@
 import { log } from "node:console";
-import { addProductsToCart, findCartItemById, getCartItems, updateCartItemQty } from "../model/cartModel";
+import { addProductsToCart, deleteCartItemsById, findCartItemById, getCartItems, updateCartItemQty } from "../model/cartModel";
 import { findProductById } from "../model/productModel";
 
 // ADD ITEMS TO CART
@@ -149,7 +149,6 @@ export async function updateCartQty(req, res) {
             msg: "Qty updated successfully",
             data: updatedCartQty
         });
-
     }
 
     catch(err){
@@ -159,4 +158,53 @@ export async function updateCartQty(req, res) {
             reason: err.message
         });
     }      
+}
+
+// DELETE CART ITEMS
+export async function deleteCartItems(req, res) {
+    
+    try {
+
+        const id = Number(req.params.id);
+
+        if (!id || Number.isNaN(id)) {
+            return res.status(400).json({
+                success: false,
+                msg: "Id must be a valid integer"
+            });
+        }    
+        
+        const cartItemExist = await findCartItemById(id);
+
+        if (!cartItemExist) {
+            return res.status(404).json({
+                success: false,
+                msg: "Cart item not found"
+            });
+        }
+
+        const userId = req.user.id;
+
+        if (cartItemExist.userId !== userId) {
+            return res.status(403).json({
+                success: false,
+                msg: "Cart item does not belong to the user"
+            });
+        }
+        
+        await deleteCartItemsById(id);
+
+        return res.status(200).json({
+            success: true,
+            msg: "Cart item deleted successfully"
+        });
+    }
+
+    catch(err){
+        return res.status(400).json({
+            success: false,
+            msg: "Failed to delete cart item(s)",
+            reason: err.message
+        });
+    }     
 }
