@@ -1,6 +1,6 @@
 import { prisma } from "../lib/prisma";
 
-
+// ADD NEW PRODUCT
 export async function createNewProduct(data) {
 
     return prisma.product.create({
