@@ -1,0 +1,15 @@
+[0;1;31m●[0m postgresql@12-main.service - PostgreSQL Cluster 12-main
+     Loaded: loaded (/lib/systemd/system/postgresql@.service; enabled-runtime; vendor preset: enabled)
+     Active: [0;1;31mfailed[0m (Result: protocol) since Sat 2026-07-18 00:35:09 WAT; 24s ago
+    Process: 24753 ExecStart=/usr/bin/pg_ctlcluster --skip-systemctl-redirect 12-main start [0;1;31m(code=exited, status=1/FAILURE)[0m
+
+Jul 18 00:35:09 john-W240HU-W250HUQ postgresql@12-main[24753]: 2026-07-18 00:35:09.323 WAT [24758] LOG:  could not bind IPv4 address "127.0.0.1": Address already in use
+Jul 18 00:35:09 john-W240HU-W250HUQ postgresql@12-main[24753]: 2026-07-18 00:35:09.323 WAT [24758] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+Jul 18 00:35:09 john-W240HU-W250HUQ postgresql@12-main[24753]: 2026-07-18 00:35:09.323 WAT [24758] WARNING:  could not create listen socket for "localhost"
+Jul 18 00:35:09 john-W240HU-W250HUQ postgresql@12-main[24753]: 2026-07-18 00:35:09.323 WAT [24758] FATAL:  could not create any TCP/IP sockets
+Jul 18 00:35:09 john-W240HU-W250HUQ postgresql@12-main[24753]: 2026-07-18 00:35:09.323 WAT [24758] LOG:  database system is shut down
+Jul 18 00:35:09 john-W240HU-W250HUQ postgresql@12-main[24753]: pg_ctl: could not start server
+Jul 18 00:35:09 john-W240HU-W250HUQ postgresql@12-main[24753]: Examine the log output.
+Jul 18 00:35:09 john-W240HU-W250HUQ systemd[1]: postgresql@12-main.service: Can't open PID file /run/postgresql/12-main.pid (yet?) after start: Operation not permitted
+Jul 18 00:35:09 john-W240HU-W250HUQ systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mpostgresql@12-main.service: Failed with result 'protocol'.[0m
+Jul 18 00:35:09 john-W240HU-W250HUQ systemd[1]: [0;1;31m[0;1;39m[0;1;31mFailed to start PostgreSQL Cluster 12-main.[0m

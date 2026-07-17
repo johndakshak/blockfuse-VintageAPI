@@ -8,6 +8,7 @@ import productRoute from "./routes/productRoute.js";
 import cartRoute from "./routes/cartRoute.js";
 import checkoutRoute from "./routes/checkoutRoute.js";
 import orderRoute from "./routes/orderRoute.js";
+import paymentRoute from "./routes/paymentRoute.js";
 
 const app = express();
 const port = `${process.env.EXPRESS_PORT}`;
@@ -20,6 +21,7 @@ app.use("/", productRoute);
 app.use("/", cartRoute);
 app.use("/", checkoutRoute);
 app.use("/", orderRoute);
+app.use("/", paymentRoute);
 
 app.get("/", (req, res) => {
     return res.status(200).json({
