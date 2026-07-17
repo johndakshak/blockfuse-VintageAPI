@@ -12,15 +12,23 @@ enum Role {
   ADMIN
 }
 
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  DELIVERED
+  CANCELLED
+}
+
 model User {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   name      String
-  email     String   @unique
+  email     String    @unique
   password  String
-  role      Role @default(USER)
+  role      Role      @default(USER)
   products  Product[]
   cart      Cart[]
-  createdAt DateTime @default(now())
+  orders    Order[]   
+  createdAt DateTime  @default(now())
 }
 
 model Product {
@@ -33,6 +41,7 @@ model Product {
   createdBy   Int
   user        User     @relation(fields: [createdBy], references: [id])
   cart        Cart[]
+  orderItems  OrderItem[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -48,4 +57,25 @@ model Cart {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, productId])
+}
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  totalPrice  Decimal
+  status      OrderStatus @default(PENDING)
+  user        User        @relation(fields: [userId], references: [id])
+  items       OrderItem[] 
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  price     Decimal 
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
 }

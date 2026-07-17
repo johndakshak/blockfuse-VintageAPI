@@ -6,6 +6,7 @@ import loginRoutes from "./routes/loginRoute.js"
 import currentUserRoute from "./routes/currentUserRoute.js"
 import productRoute from "./routes/productRoute.js"
 import cartRoute from "./routes/cartRoute.js"
+import checkoutRoute from "./routes/checkoutRoute.js"
 
 const app = express();
 const port = `${process.env.EXPRESS_PORT}`;
@@ -16,6 +17,7 @@ app.use("/", loginRoutes);
 app.use("/", currentUserRoute);
 app.use("/", productRoute);
 app.use("/", cartRoute);
+app.use("/", checkoutRoute);
 
 app.get("/", (req, res) => {
     return res.status(200).json({
@@ -31,5 +33,5 @@ app.use((err, req, res, next) => {
 
 
 app.listen(port, () => {
-    console.log(`App is runnig on Port: ${port}`);
+    console.log(`BlockfuseVintage is runnig on Port: ${port}`);
 });
