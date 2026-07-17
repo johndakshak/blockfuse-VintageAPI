@@ -1,4 +1,4 @@
-import { log } from "node:console";
+// import { log } from "node:console";
 import { addProductsToCart, deleteCartItemsById, findCartItemById, getCartItems, updateCartItemQty } from "../model/cartModel";
 import { findProductById } from "../model/productModel";
 
