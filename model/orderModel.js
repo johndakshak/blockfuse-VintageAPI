@@ -24,3 +24,18 @@ export async function findAllOrdersByAdmin() {
         }
     })
 }
+
+// UPDATE ORDER STATUS BY ADMIN
+export async function updateOrderStatusByAdmin(orderId, status) {
+    return prisma.order.update({
+        where: { id: orderId },
+        data: { status }
+    });
+}
+
+// FIND ORDER
+export async function findOrder(id) {
+    return prisma.order.findUnique({
+        where: { id }
+    });
+}
