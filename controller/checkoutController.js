@@ -7,7 +7,6 @@ export async function checkout(req, res) {
         const userId = req.user.id;
 
         const itemsAtCheckout = await checkoutItems({ userId });
-        console.log(itemsAtCheckout)
         
         return res.status(200).json({
             success: true,

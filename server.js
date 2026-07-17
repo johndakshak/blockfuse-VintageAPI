@@ -1,12 +1,13 @@
 import express from "express";
 import "dotenv/config";
 import { prisma } from "./lib/prisma.ts";
-import userRoutes from "./routes/userRoutes.js"
-import loginRoutes from "./routes/loginRoute.js"
-import currentUserRoute from "./routes/currentUserRoute.js"
-import productRoute from "./routes/productRoute.js"
-import cartRoute from "./routes/cartRoute.js"
-import checkoutRoute from "./routes/checkoutRoute.js"
+import userRoutes from "./routes/userRoutes.js";
+import loginRoutes from "./routes/loginRoute.js";
+import currentUserRoute from "./routes/currentUserRoute.js";
+import productRoute from "./routes/productRoute.js";
+import cartRoute from "./routes/cartRoute.js";
+import checkoutRoute from "./routes/checkoutRoute.js";
+import orderRoute from "./routes/orderRoute.js";
 
 const app = express();
 const port = `${process.env.EXPRESS_PORT}`;
@@ -18,6 +19,7 @@ app.use("/", currentUserRoute);
 app.use("/", productRoute);
 app.use("/", cartRoute);
 app.use("/", checkoutRoute);
+app.use("/", orderRoute);
 
 app.get("/", (req, res) => {
     return res.status(200).json({
