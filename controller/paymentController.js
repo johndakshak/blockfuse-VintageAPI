@@ -1,5 +1,5 @@
 import { initializePayment } from "../config/paystack";
-import { findOrder } from "../model/orderModel";
+import { findOrder, updateOrderPaymentReference } from "../model/orderModel";
 
 export async function paymentGateway(req, res) {
     
@@ -44,6 +44,8 @@ export async function paymentGateway(req, res) {
         const email = req.user.email; 
 
         const paymentResponse = await initializePayment(email, amountInKobo);
+
+        await updateOrderPaymentReference(orderId, paymentResponse.data.reference);
 
         return res.status(200).json({
             success: true,
