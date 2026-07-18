@@ -39,3 +39,18 @@ export async function findOrder(id) {
         where: { id }
     });
 }
+
+// UPDATE ORDER PAYMENT REFERENCE
+export async function updateOrderPaymentReference(orderId, paymentReference) {
+    return prisma.order.update({
+        where: { id: orderId },
+        data: { paymentReference }
+    });
+}
+
+// FIND ORDER BY PAYMENT REFERENCE
+export async function findOrderByPaymentReference(reference) {
+    return prisma.order.findUnique({
+        where: { paymentReference: reference }
+    });
+}

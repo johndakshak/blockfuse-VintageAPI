@@ -9,6 +9,7 @@ import cartRoute from "./routes/cartRoute.js";
 import checkoutRoute from "./routes/checkoutRoute.js";
 import orderRoute from "./routes/orderRoute.js";
 import paymentRoute from "./routes/paymentRoute.js";
+import webhookRoute from "./routes/webhookRoute.js";
 
 const app = express();
 const port = `${process.env.EXPRESS_PORT}`;
@@ -22,6 +23,7 @@ app.use("/", cartRoute);
 app.use("/", checkoutRoute);
 app.use("/", orderRoute);
 app.use("/", paymentRoute);
+app.use("/", webhookRoute);
 
 app.get("/", (req, res) => {
     return res.status(200).json({
@@ -34,7 +36,6 @@ app.use((err, req, res, next) => {
     console.error("Global error handler:", err);
     res.status(500).json({ success: false, msg: "Internal server error", reason: err.message });
 });
-
 
 app.listen(port, () => {
     console.log(`BlockfuseVintage is runnig on Port: ${port}`);
