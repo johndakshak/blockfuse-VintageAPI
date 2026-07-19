@@ -10,11 +10,13 @@ import checkoutRoute from "./routes/checkoutRoute.js";
 import orderRoute from "./routes/orderRoute.js";
 import paymentRoute from "./routes/paymentRoute.js";
 import webhookRoute from "./routes/webhookRoute.js";
+import { generalLimiter } from "./middleware/rateLimitMiddleware.js"
 
 const app = express();
 const port = `${process.env.EXPRESS_PORT}`;
 
 app.use(express.json());
+app.use(generalLimiter);
 app.use("/users", userRoutes);
 app.use("/", loginRoutes);
 app.use("/", currentUserRoute);
