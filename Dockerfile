@@ -19,4 +19,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["npx", "tsx", "server.js"]
+CMD sh -c "npx prisma migrate deploy && npx tsx server.js"
