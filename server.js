@@ -10,7 +10,9 @@ import checkoutRoute from "./routes/checkoutRoute.js";
 import orderRoute from "./routes/orderRoute.js";
 import paymentRoute from "./routes/paymentRoute.js";
 import webhookRoute from "./routes/webhookRoute.js";
-import { generalLimiter } from "./middleware/rateLimitMiddleware.js"
+import { generalLimiter } from "./middleware/rateLimitMiddleware.js";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./swagger/swagger.js";
 
 const app = express();
 const port = `${process.env.EXPRESS_PORT}`;
@@ -26,6 +28,15 @@ app.use("/", checkoutRoute);
 app.use("/", orderRoute);
 app.use("/", paymentRoute);
 app.use("/", webhookRoute);
+
+// Swagger UI — interactive docs at /docs
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Raw OpenAPI JSON spec at /openapi.json
+app.get("/openapi.json", (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    res.send(swaggerSpec);
+});
 
 app.get("/", (req, res) => {
     return res.status(200).json({
