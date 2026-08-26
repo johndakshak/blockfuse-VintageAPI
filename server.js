@@ -1,5 +1,6 @@
 import express from "express";
 import "dotenv/config";
+import cors from "cors";
 import { prisma } from "./lib/prisma.ts";
 import userRoutes from "./routes/userRoutes.js";
 import loginRoutes from "./routes/loginRoute.js";
@@ -16,6 +17,59 @@ import { swaggerSpec } from "./swagger/swagger.js";
 
 const app = express();
 const port = `${process.env.EXPRESS_PORT}`;
+
+// ─── CORS ─────────────────────────────────────────────────────────────────────
+//
+// The browser blocks cross-origin requests unless the server explicitly says
+// which origins are allowed.  Without this the frontend gets:
+//   TypeError: Failed to fetch
+//
+// Only the two legitimate frontend origins are whitelisted:
+//   • http://localhost:3000            — local Next.js dev server
+//   • https://blockfuse-vintage.vercel.app — production frontend on Vercel
+//
+// No trailing slashes — browsers send the origin without one.
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://blockfuse-vintage.vercel.app",
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no Origin header (curl, Postman, server-to-server)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    // Any other origin is blocked — logged so you can see it in the server console
+    console.warn(`[CORS] Blocked request from origin: ${origin}`);
+    return callback(new Error(`Origin ${origin} is not allowed by CORS`));
+  },
+
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+
+  // Authorization is required for protected routes (GET /me, GET /cartItems, etc.)
+  allowedHeaders: ["Content-Type", "Authorization"],
+
+  // credentials: true is NOT set.
+  // The frontend authenticates with Authorization: Bearer <token>, not cookies,
+  // so enabling credentials mode here would be unnecessary.
+};
+
+// Apply CORS to every incoming request
+app.use(cors(corsOptions));
+
+// Respond to OPTIONS preflight requests for every route.
+// The browser sends OPTIONS before POST /login, GET /me, etc.
+// Using the same corsOptions object means there is only one place to update origins.
+// Express 5 uses path-to-regexp v8 which no longer accepts bare "*".
+// "{*path}" is the correct Express 5 wildcard syntax for "match any path".
+app.options("{*path}", cors(corsOptions));
+
+// ─── Body parsing & rate limiting ─────────────────────────────────────────────
 
 app.use(express.json());
 app.use(generalLimiter);
@@ -40,7 +94,7 @@ app.get("/openapi.json", (req, res) => {
 
 app.get("/", (req, res) => {
     return res.status(200).json({
-        success: true, 
+        success: true,
         msg: "Welcome to Blockfuse Vintage"
     });
 });
